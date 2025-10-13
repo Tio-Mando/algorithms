@@ -9,9 +9,20 @@
         "test:coverage": "jest --coverage",
         "lint": "eslint .",
         "lint:fix": "eslint . --fix",
+        "lint:disable": "echo 'Linting desactivado para estudiantes'",
         "format": "prettier --write .",
         "format:check": "prettier --check .",
-        "validate": "npm run lint && npm run format:check && npm run test"
+        "format:disable": "echo 'Formateo desactivado para estudiantes'",
+        "validate": "npm run lint && npm run format:check && npm run test",
+        "validate:student": "npm run test",
+        "exercise": "node run-exercise.js",
+        "run": "node run-exercise.js run",
+        "list": "node run-exercise.js list",
+        "level": "node run-exercise.js level",
+        "test-exercise": "node run-exercise.js test",
+        "start": "node run.js",
+        "e": "node run.js",
+        "t": "node run-exercise.js test"
     },
     "keywords": [
         "algorithms",
