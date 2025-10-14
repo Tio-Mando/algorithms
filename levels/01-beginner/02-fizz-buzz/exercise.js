@@ -39,28 +39,6 @@ function fizzBuzz(n) {
     
     // throw new Error('Función no implementada');
 }
-let n = 5
-
-fizzBuzz(n)
-// let valorActual = 15
-// let valoS = valorActual.toString()
-// console.log(typeof valoS)
-// console.log(valoS)
-
-// console.log(valorActual % 3 === 0 && valorActual % 5 === 0)
-
-// let aa = []
-// aa.push('aaa')
-// console.log(aa)
-
-// if (3 % 3 === 0){
-//     console.log('es primo')
-// } else {
-//     console.log('no es primo')
-    
-// }
-
-
-
+console.log("✅✅✅✅")
 module.exports = fizzBuzz;
 
