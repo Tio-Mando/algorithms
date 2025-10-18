@@ -34,6 +34,6 @@ return newArry
 
     return newArry;
 }
-console.log("Number", `${5.0}`)
+
 // removeDuplicates(arry)
 module.exports = removeDuplicates;
