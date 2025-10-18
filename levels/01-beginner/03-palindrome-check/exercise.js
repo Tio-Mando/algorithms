@@ -12,9 +12,10 @@
  */
 
 function isPalindrome(s) {
-        let sinEspacios = s.replaceAll(/\s+/g, '').toLowerCase()
-        console.log(sinEspacios.length)
-        console.log(sinEspacios)
+        let sinEspacios = s.replaceAll(' ', '').replaceAll('.', '').replaceAll(',', '').replaceAll(/'/g, '').toLowerCase()
+
+       
+        console.log({sinEspacios})
         let resultado = ''
 
 
@@ -40,7 +41,7 @@ function isPalindrome(s) {
     // throw new Error('Función no implementada');
 }
 
-let palabra = 'A man a plan a canal Panama'
+let palabra = "Madam, I'm Adam"
 
 isPalindrome(palabra)
 // console.log(palabra[0])
