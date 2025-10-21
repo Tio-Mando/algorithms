@@ -17,7 +17,35 @@
  * @param {boolean} caseSensitive - Si la búsqueda es sensible a mayúsculas/minúsculas
  * @returns {number} - Número de veces que aparece la palabra
  */
+
+const sampleText = "El gato negro está, en el jardín. El gato es muy inteligente y el jardín es hermoso.";
+const word = 'el'
+const trueORFalse = false
 function searchWord(text, word, caseSensitive = false) {
+    let words = []
+    let countWords
+    let key = word
+    if (caseSensitive == false) {
+        text = text.toLowerCase()
+        // console.log(text)
+    }
+
+    text = text.replace(/[.]/g, '')
+    text = text.replace(/[,]/g, '')
+    console.log(text)
+
+
+    words = text.split(' ')
+    console.log(words)
+
+    countWords = words.filter(word => word === key)
+    // console.log(word)
+    // console.log(countWords)
+    // console.log(countWords.length)
+    console.log('------------------------------------------')
+
+    return countWords.length
+
     // TODO: Implementar búsqueda de palabra
     // 
     // Pasos:
@@ -27,9 +55,23 @@ function searchWord(text, word, caseSensitive = false) {
     // 4. Retornar el conteo
     // 
     // Pista: Usa split() para dividir el texto y filter() para contar
-    
-    throw new Error('Función no implementada');
+
+    // throw new Error('Función no implementada');
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 /**
  * Busca una palabra en un texto y retorna información detallada
@@ -38,8 +80,51 @@ function searchWord(text, word, caseSensitive = false) {
  * @param {string} word - Palabra a buscar
  * @param {boolean} caseSensitive - Si la búsqueda es sensible a mayúsculas/minúsculas
  * @returns {Object} - Objeto con información detallada de la búsqueda
- */
+*/
 function searchWordDetailed(text, word, caseSensitive = false) {
+    let numbOcurrences = searchWord(sampleText, word, trueORFalse)
+    let detailed = {}
+    let positions = []
+
+
+    if (caseSensitive == false) {
+        text = text.toLowerCase()
+        // console.log(text)
+    }
+    text = text.replace(/[.]/g, '')
+    text = text.replace(/[,]/g, '')
+
+
+    words = text.split(' ')
+    // console.log(words)
+    for (let i = 0; i < words.length; i++) {
+        if (words.indexOf(word, i) >= 0) {
+            positions.push(words.indexOf(word, i))
+            i = words.indexOf(word, i)
+            console.log(i +' '+ positions)
+        }
+    }
+    if (positions.length === 0) {
+        lastPosition = -1
+        firstPosition = -1
+    } else {
+        lastPosition = positions[positions.length - 1]
+        firstPosition = positions[0]
+    }
+    positions[positions.length - 1]
+    wordLength = word.length
+
+    detailed = {
+        count: numbOcurrences,
+        positions: positions,
+        firstPosition: firstPosition,
+        lastPosition: lastPosition,
+        wordLength: wordLength
+    }
+
+    console.log(detailed)
+    return detailed
+
     // TODO: Implementar búsqueda detallada
     // 
     // Retornar objeto con:
@@ -50,9 +135,24 @@ function searchWordDetailed(text, word, caseSensitive = false) {
     // - wordLength: longitud de la palabra buscada
     // 
     // Pista: Usa indexOf() en un bucle para encontrar todas las posiciones
-    
-    throw new Error('Función no implementada');
+
+    // throw new Error('Función no implementada');
 }
+
+searchWordDetailed(sampleText, word, trueORFalse)
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 /**
  * Busca múltiples palabras en un texto
@@ -72,7 +172,7 @@ function searchMultipleWords(text, words, caseSensitive = false) {
     // 4. Retornar el objeto con todos los conteos
     // 
     // Pista: Usa reduce() o forEach() para iterar sobre las palabras
-    
+
     throw new Error('Función no implementada');
 }
 
@@ -94,7 +194,7 @@ function searchPattern(text, pattern, caseSensitive = false) {
     // 4. Retornar array de palabras encontradas
     // 
     // Pista: Usa new RegExp() para crear la expresión regular
-    
+
     throw new Error('Función no implementada');
 }
 
@@ -115,7 +215,7 @@ function findMostFrequentWord(text, caseSensitive = false) {
     // 4. Retornar objeto con la palabra y su conteo
     // 
     // Pista: Usa reduce() para contar frecuencias y Object.entries() para encontrar el máximo
-    
+
     throw new Error('Función no implementada');
 }
 
@@ -138,7 +238,7 @@ function generateTextStats(text, caseSensitive = false) {
     // - shortestWord: palabra más corta
     // 
     // Pista: Combina las funciones anteriores para generar las estadísticas
-    
+
     throw new Error('Función no implementada');
 }
 
@@ -159,7 +259,7 @@ function cleanText(text, caseSensitive = false) {
     // 4. Retornar texto limpio
     // 
     // Pista: Usa replace() con expresiones regulares
-    
+
     throw new Error('Función no implementada');
 }
 
