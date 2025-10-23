@@ -18,10 +18,15 @@
  * @returns {number} - Número de veces que aparece la palabra
  */
 
+
+
+
 const sampleText = "El gato negro está, en el jardín. El gato es muy inteligente y el jardín es hermoso.";
 const word = 'el'
 const trueORFalse = false
-const wordsExample = ['el', 'gato', 'muy', 'es' ]
+const wordsExample = ['el', 'gato', 'muy', 'es']
+const patter = 'ga'
+
 
 
 function searchWord(text, word, caseSensitive = false) {
@@ -35,11 +40,11 @@ function searchWord(text, word, caseSensitive = false) {
 
     text = text.replace(/[.]/g, '')
     text = text.replace(/[,]/g, '')
-    console.log(text)
+    // console.log(text)
 
 
     words = text.split(' ')
-    console.log(words)
+    // console.log(words)
 
     countWords = words.filter(word => word === key)
     // console.log(word)
@@ -62,20 +67,6 @@ function searchWord(text, word, caseSensitive = false) {
 
     // throw new Error('Función no implementada');
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 /**
  * Busca una palabra en un texto y retorna información detallada
@@ -144,21 +135,7 @@ function searchWordDetailed(text, word, caseSensitive = false) {
 
     // throw new Error('Función no implementada');
 }
-
 searchWordDetailed(sampleText, word, trueORFalse)
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 /**
  * Busca múltiples palabras en un texto
@@ -171,10 +148,11 @@ searchWordDetailed(sampleText, word, trueORFalse)
 function searchMultipleWords(text, words, caseSensitive = false) {
     let objetFunction = {}
 
-    for(let i = 0; i<words.length; i++){
-        objetFunction.word = words[i]
+    for (let i = 0; i < words.length; i++) {
+        objetFunction[words[i]] = searchWord(text, words[i], trueORFalse)
     }
     console.log(objetFunction)
+    console.log('//////////////////////////////')
     // TODO: Implementar búsqueda de múltiples palabras
     // 
     // Pasos:
@@ -186,8 +164,8 @@ function searchMultipleWords(text, words, caseSensitive = false) {
     // Pista: Usa reduce() o forEach() para iterar sobre las palabras
 
     // throw new Error('Función no implementada');
+    return objetFunction
 }
-
 searchMultipleWords(sampleText, wordsExample, trueORFalse)
 
 /**
@@ -199,6 +177,30 @@ searchMultipleWords(sampleText, wordsExample, trueORFalse)
  * @returns {Array} - Array de palabras que coinciden con el patrón
  */
 function searchPattern(text, pattern, caseSensitive = false) {
+    let pat = RegExp(pattern)
+    console.log(pat)
+    text = text.toLowerCase()
+    // let words = 'gato'
+    let words = text.split(' ')
+    console.log(words)
+
+
+    
+
+    // let a = words.includes(pattern)
+    // console.log(a)
+    let coincidense = []
+    for(let i = 0; i<words.length ; i++){
+        if(words[i].includes(pattern) === true){
+
+            coincidense.push(words[i])
+        } 
+    }
+    console.log(coincidense)
+    console.log('               //////             ')
+    
+return coincidense
+
     // TODO: Implementar búsqueda por patrón
     // 
     // Pasos:
@@ -209,8 +211,9 @@ function searchPattern(text, pattern, caseSensitive = false) {
     // 
     // Pista: Usa new RegExp() para crear la expresión regular
 
-    throw new Error('Función no implementada');
+    // throw new Error('Función no implementada');
 }
+searchPattern(sampleText, patter, trueORFalse)
 
 /**
  * Encuentra la palabra más frecuente en un texto
@@ -220,6 +223,15 @@ function searchPattern(text, pattern, caseSensitive = false) {
  * @returns {Object} - Objeto con la palabra más frecuente y su conteo
  */
 function findMostFrequentWord(text, caseSensitive = false) {
+    
+    text = text.split(' ')
+    console.log(text)
+
+    let maxFrecuenci = text.reduce((count, value) => { 
+        count = value.filter(word => word === word)
+        console.log(maxFrecuenci)
+    })
+    
     // TODO: Implementar búsqueda de palabra más frecuente
     // 
     // Pasos:
@@ -230,8 +242,9 @@ function findMostFrequentWord(text, caseSensitive = false) {
     // 
     // Pista: Usa reduce() para contar frecuencias y Object.entries() para encontrar el máximo
 
-    throw new Error('Función no implementada');
+    // throw new Error('Función no implementada');
 }
+findMostFrequentWord(sampleText, trueORFalse)
 
 /**
  * Genera estadísticas completas de un texto
