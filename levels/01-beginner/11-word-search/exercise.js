@@ -21,6 +21,9 @@
 const sampleText = "El gato negro está, en el jardín. El gato es muy inteligente y el jardín es hermoso.";
 const word = 'el'
 const trueORFalse = false
+const wordsExample = ['el', 'gato', 'muy', 'es' ]
+
+
 function searchWord(text, word, caseSensitive = false) {
     let words = []
     let countWords
@@ -43,6 +46,7 @@ function searchWord(text, word, caseSensitive = false) {
     // console.log(countWords)
     // console.log(countWords.length)
     console.log('------------------------------------------')
+    console.log(' ')
 
     return countWords.length
 
@@ -101,7 +105,7 @@ function searchWordDetailed(text, word, caseSensitive = false) {
         if (words.indexOf(word, i) >= 0) {
             positions.push(words.indexOf(word, i))
             i = words.indexOf(word, i)
-            console.log(i +' '+ positions)
+            // console.log(i +' '+ positions)
         }
     }
     if (positions.length === 0) {
@@ -123,6 +127,8 @@ function searchWordDetailed(text, word, caseSensitive = false) {
     }
 
     console.log(detailed)
+    console.log('////////////////////////////////////')
+    console.log(' ')
     return detailed
 
     // TODO: Implementar búsqueda detallada
@@ -163,6 +169,12 @@ searchWordDetailed(sampleText, word, trueORFalse)
  * @returns {Object} - Objeto con el conteo de cada palabra
  */
 function searchMultipleWords(text, words, caseSensitive = false) {
+    let objetFunction = {}
+
+    for(let i = 0; i<words.length; i++){
+        objetFunction.word = words[i]
+    }
+    console.log(objetFunction)
     // TODO: Implementar búsqueda de múltiples palabras
     // 
     // Pasos:
@@ -173,8 +185,10 @@ function searchMultipleWords(text, words, caseSensitive = false) {
     // 
     // Pista: Usa reduce() o forEach() para iterar sobre las palabras
 
-    throw new Error('Función no implementada');
+    // throw new Error('Función no implementada');
 }
+
+searchMultipleWords(sampleText, wordsExample, trueORFalse)
 
 /**
  * Busca palabras que contengan un patrón específico
