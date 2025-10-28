@@ -18,42 +18,63 @@
  * @returns {number} - Número de veces que aparece la palabra
  */
 
+const myFilter = [1,2,3].filter(function(num, idx){
+    console.log("idx",idx)
+    return num % 2=== 0
+})
+console.log("myFilter",myFilter)
+// [1,2,3].filter(()=> true)
+        // new MyArmando]'´-Class()
+// const myText = "gato perro galeria"
+// const myPatter = "*ga"
+// const myRegex = new RegExp(`\\bga\\w*`, "gi")´
+
+// console.log("______",  myText.match(myRegex))
+// const sampleText = "El gato negro está, en el jardín. El gato es muy inteligente y el jardín es hermoso.";
+// const word = 'El'
+// const trueORFalse = true
+// const wordsExample = ['el', 'gato', 'muy', 'es']
+// const patter = 'in'
 
 
 
-const sampleText = "El gato negro está, en el jardín. El gato es muy inteligente y el jardín es hermoso.";
-const word = 'el'
-const trueORFalse = false
-const wordsExample = ['el', 'gato', 'muy', 'es']
-const patter = 'ga'
-
-
-
-function searchWord(text, word, caseSensitive = false) {
+function searchWord(text, word, caseSensitive = false ) {
     let words = []
     let countWords
     let key = word
-    if (caseSensitive == false) {
+    if (caseSensitive === false) {
         text = text.toLowerCase()
+        word = word.toLowerCase()
         // console.log(text)
     }
 
     text = text.replace(/[.]/g, '')
     text = text.replace(/[,]/g, '')
+    text = text.replace(/[!]/g, '')
+    text = text.replace(/[¡]/g, '')
+    text = text.replace(/[¿]/g, '')
+    text = text.replace(/[?]/g, '')
     // console.log(text)
 
 
     words = text.split(' ')
     // console.log(words)
 
-    countWords = words.filter(word => word === key)
+    // countWords = words.filter(word => word === key)
+    let count = 0
+    for(w of words){
+        if(word === w){
+            count ++
+        }
+    }
+    console.log(count)
     // console.log(word)
     // console.log(countWords)
+    // console.log('------------------------------------------')
     // console.log(countWords.length)
-    console.log('------------------------------------------')
-    console.log(' ')
+    // console.log(' ')
 
-    return countWords.length
+    return count
 
     // TODO: Implementar búsqueda de palabra
     // 
@@ -67,6 +88,11 @@ function searchWord(text, word, caseSensitive = false) {
 
     // throw new Error('Función no implementada');
 }
+
+
+
+
+
 
 /**
  * Busca una palabra en un texto y retorna información detallada
@@ -82,7 +108,7 @@ function searchWordDetailed(text, word, caseSensitive = false) {
     let positions = []
 
 
-    if (caseSensitive == false) {
+    if (caseSensitive === false) {
         text = text.toLowerCase()
         // console.log(text)
     }
@@ -185,21 +211,21 @@ function searchPattern(text, pattern, caseSensitive = false) {
     console.log(words)
 
 
-    
+
 
     // let a = words.includes(pattern)
     // console.log(a)
     let coincidense = []
-    for(let i = 0; i<words.length ; i++){
-        if(words[i].includes(pattern) === true){
+    for (let i = 0; i < words.length; i++) {
+        if (words[i].includes(pattern) === true) {
 
             coincidense.push(words[i])
-        } 
+        }
     }
     console.log(coincidense)
     console.log('               //////             ')
-    
-return coincidense
+
+    return coincidense
 
     // TODO: Implementar búsqueda por patrón
     // 
@@ -222,16 +248,43 @@ searchPattern(sampleText, patter, trueORFalse)
  * @param {boolean} caseSensitive - Si el análisis es sensible a mayúsculas/minúsculas
  * @returns {Object} - Objeto con la palabra más frecuente y su conteo
  */
-function findMostFrequentWord(text, caseSensitive = false) {
-    
-    text = text.split(' ')
-    console.log(text)
+function findMostFrequentWord(texto, caseSensitive = false) {
+    let objFinal = {}
 
-    let maxFrecuenci = text.reduce((count, value) => { 
-        count = value.filter(word => word === word)
-        console.log(maxFrecuenci)
-    })
-    
+    texto = texto.replace(/[.]/g, '')
+    texto = texto.replace(/[,]/g, '')
+
+    texto = texto.toLowerCase()
+
+    let wordSplit = texto.split(' ')
+    // console.log(texto)
+
+    for (let i = 0; i < wordSplit.length; i++) {
+
+        objFinal[wordSplit[i]] = searchWord(texto, wordSplit[i], trueORFalse)
+        // console.log(wordSplit[i])
+        // console.log(objFinal)
+    }
+
+
+    // console.log(objFinal)
+    let dataMax = 0
+    let key
+    for (element in objFinal) {
+
+        if (objFinal[element] > dataMax) {
+            dataMax = objFinal[element]
+            key = element
+        }
+        // console.log(dataMax + ' ' + key)
+    }
+    let result = {}
+    result[key] = dataMax
+    console.log(result)
+    console.log('+_____________________+')
+
+    return result
+
     // TODO: Implementar búsqueda de palabra más frecuente
     // 
     // Pasos:
@@ -254,6 +307,56 @@ findMostFrequentWord(sampleText, trueORFalse)
  * @returns {Object} - Objeto con estadísticas del texto
  */
 function generateTextStats(text, caseSensitive = false) {
+    text = text.replace(/[.]/g, '')
+    text = text.replace(/[,]/g, '')
+    text = text.toLowerCase()
+
+    let arryWords = text.split(' ')
+    let totalWords = text.split(' ').length
+    let uniqueWords = []
+
+    for (palabra of arryWords) {
+        if (searchWord(text, palabra, caseSensitive) === 1) {
+            uniqueWords.push(palabra)
+
+        }
+
+    }
+
+    console.log(uniqueWords)
+
+    mostFrequentWord = findMostFrequentWord(text, caseSensitive)
+
+
+    let averageWordLength
+    let count = 0
+    for (tex of arryWords) {
+        count += tex.length
+    }
+    averageWordLength = count / arryWords.length
+    averageWordLength = averageWordLength.toFixed(2)
+    console.log(averageWordLength)
+
+
+    let longestWord
+    let countLarges = 0
+    for (large of arryWords) {
+        if (countLarges < large.length) {
+            countLarges = large.length
+            longestWord = large
+        }
+    }
+    console.log(longestWord)
+    
+    let shortestWord
+    let countShort = arryWords[0]
+    for(let i = 0; i<arryWords.length; i++){
+        if(countShort.length < arryWords[i].length){
+            shortestWord = countShort
+        }
+    }
+    console.log(shortestWord)
+
     // TODO: Implementar generación de estadísticas
     // 
     // Retornar objeto con:
@@ -266,8 +369,10 @@ function generateTextStats(text, caseSensitive = false) {
     // 
     // Pista: Combina las funciones anteriores para generar las estadísticas
 
-    throw new Error('Función no implementada');
+    // throw new Error('Función no implementada');
 }
+
+generateTextStats(sampleText, trueORFalse)
 
 /**
  * Limpia y normaliza un texto para búsqueda
@@ -277,6 +382,16 @@ function generateTextStats(text, caseSensitive = false) {
  * @returns {string} - Texto limpio y normalizado
  */
 function cleanText(text, caseSensitive = false) {
+
+    if(caseSensitive === false){
+        text = text.replaceAll(',', '')
+        text = text.replaceAll('.', '')
+        text = text.replaceAll('  ', ' ')
+        text = text.toLowerCase()
+        console.log(text)
+    }
+
+    return text
     // TODO: Implementar limpieza de texto
     // 
     // Pasos:
@@ -287,8 +402,10 @@ function cleanText(text, caseSensitive = false) {
     // 
     // Pista: Usa replace() con expresiones regulares
 
-    throw new Error('Función no implementada');
+    // throw new Error('Función no implementada');
 }
+
+cleanText(sampleText, trueORFalse)
 
 module.exports = {
     searchWord,
@@ -299,3 +416,8 @@ module.exports = {
     generateTextStats,
     cleanText
 };
+
+
+
+
+searchPattern(sampleText, patter, trueORFalse)
