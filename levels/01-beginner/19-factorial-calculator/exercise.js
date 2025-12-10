@@ -196,21 +196,21 @@ let numCero = 25
 function countTrailingZeros(n) {
     // TODO: Implementar conteo de ceros finales
     // Pista 1: Validar que n sea un número válido
-    if (Number.isFinite(n) === 0) {
+    if (Number.isFinite(n) === false || n < 0) {
         return null
     }
 
-    let count = calculateFactorial(n)
-    let countZero = 0
-    while (count >= 2) {
-        if (count >= 5){
-            count /= 5
-        }else {
-            count /= 2
-        }
-        countZero++
-    }
-    console.log(countZero)
+    // let count = calculateFactorial(n)
+    // let countZero = 0
+    // while (count >= 2) {
+    //     if (count >= 5){
+    //         count /= 5
+    //     }else {
+    //         count /= 2
+    //     }
+    //     countZero++
+    // }
+    // console.log(countZero)
     // let numToString = count.toString()
     // let 
     // Pista 2: Los ceros finales dependen del número de factores 5 y 2
@@ -218,6 +218,15 @@ function countTrailingZeros(n) {
     // Pista 4: Retornar null si n es inválido
     // Pista 5: Para números grandes, contar potencias de 5
 
+
+    let count = 0;
+    
+    // Contar cuántas veces 5 divide n
+    for (let i = 5; i <= n; i *= 5) {
+        count += Math.floor(n / i);
+    }
+    
+    return count;
     // throw new Error('Función countTrailingZeros no implementada');
 }
 
