@@ -37,7 +37,15 @@ class Task {
      * - Asigna los valores validados a this.description, this.priority y this.completed
      */
     constructor(description, priority = 'medium', completed = false) {
-        throw new Error('Task constructor not implemented');
+        let DescriptionModify
+        if (typeof description === 'string') {
+            DescriptionModify = description.trim()
+        }else{
+            throw new Error ('Task description is required')
+        }
+        this.description = DescriptionModify
+        this.priority = priority
+        this.completeTask = completed
     }
 
     /**
@@ -58,6 +66,10 @@ class Task {
         throw new Error('Method toggleComplete not implemented');
     }
 }
+
+
+const task1 = new Task('hola')
+console.log(task1)
 
 /**
  * Gestiona una colección de tareas.
