@@ -37,15 +37,17 @@ class Task {
      * - Asigna los valores validados a this.description, this.priority y this.completed
      */
     constructor(description, priority = 'medium', completed = false) {
-        let DescriptionModify
-        if (typeof description === 'string') {
-            DescriptionModify = description.trim()
-        }else{
-            throw new Error ('Task description is required')
-        }
+        let DescriptionModify = description
+        if (typeof DescriptionModify === 'string') DescriptionModify = DescriptionModify.trim()
+        else throw new Error('Task description is required')
+
+        if (DescriptionModify === '') throw new Error('Task description is required')
+
+        if (!(priority === 'low' || priority === 'medium' || priority === 'high')) throw new Error(`'Priority must be 'low', 'medium', or 'high'`)
+
         this.description = DescriptionModify
         this.priority = priority
-        this.completeTask = completed
+        this.completed = completed
     }
 
     /**
@@ -63,13 +65,14 @@ class Task {
      * - Retorna el nuevo valor de this.completed
      */
     toggleComplete() {
-        throw new Error('Method toggleComplete not implemented');
+        if (this.completed === false) this.completed = true
+        else this.completed = false
+
+        return this.completed
     }
 }
 
 
-const task1 = new Task('hola')
-console.log(task1)
 
 /**
  * Gestiona una colección de tareas.
@@ -86,8 +89,10 @@ class TaskManager {
      * TODO:
      * - Inicializa this.tasks como un array vacío []
      */
+    tasks = []
+
     constructor() {
-        throw new Error('TaskManager constructor not implemented');
+
     }
 
     /**
@@ -107,7 +112,11 @@ class TaskManager {
      * - Retorna la tarea creada
      */
     addTask(description, priority = 'medium') {
-        throw new Error('Method addTask not implemented');
+        const newTask = new Task(description, priority)
+
+        this.tasks.push(newTask)
+
+        return newTask
     }
 
     /**
@@ -126,7 +135,9 @@ class TaskManager {
      * - Retorna la tarea encontrada o null si no se encuentra
      */
     findTask(description) {
-        throw new Error('Method findTask not implemented');
+        const foundOrNot = this.tasks.find(descroptionOfSearch => descroptionOfSearch.description === description)
+        if (foundOrNot) return foundOrNot
+        else return null
     }
 
     /**
@@ -143,7 +154,8 @@ class TaskManager {
      * - Retorna el nuevo array filtrado
      */
     getPendingTasks() {
-        throw new Error('Method getPendingTasks not implemented');
+        const taskPending = this.tasks.filter(foundTask => foundTask.completed === false)
+        return taskPending
     }
 
     /**
@@ -160,7 +172,8 @@ class TaskManager {
      * - Retorna el nuevo array filtrado
      */
     getCompletedTasks() {
-        throw new Error('Method getCompletedTasks not implemented');
+        const taskComplete = this.tasks.filter(taskDone => taskDone.completed === true)
+        return taskComplete
     }
 
     /**
@@ -178,7 +191,8 @@ class TaskManager {
      * - Retorna el nuevo array filtrado
      */
     getTasksByPriority(priority) {
-        throw new Error('Method getTasksByPriority not implemented');
+        const priori = this.tasks.filter(filter => filter.priority === priority)
+        return priori
     }
 
     /**
@@ -195,7 +209,8 @@ class TaskManager {
      * - Retorna el nuevo array de strings
      */
     getTaskDescriptions() {
-        throw new Error('Method getTaskDescriptions not implemented');
+        const arryDescription = this.tasks.map(descriptions => descriptions.description)
+        return arryDescription
     }
 
     /**
@@ -214,7 +229,10 @@ class TaskManager {
      * - Retorna true si se completó, false si no se encontró o ya estaba completada
      */
     completeTask(description) {
-        throw new Error('Method completeTask not implemented');
+        let descriptionFound = this.findTask(description)
+        console.log(descriptionFound && !descriptionFound.completed, 'chequeo')
+        if (descriptionFound && !descriptionFound.completed) return descriptionFound.toggleComplete()
+        return false
     }
 
     /**
@@ -235,7 +253,10 @@ class TaskManager {
      * - Retorna el porcentaje calculado
      */
     getCompletionPercentage() {
-        throw new Error('Method getCompletionPercentage not implemented');
+        if (this.tasks.length === 0) return 0
+        const TaskNumberCompleted = this.tasks.filter(complete => complete.completed === true).length
+        const porcent = Number.parseFloat(((TaskNumberCompleted / this.tasks.length) * 100).toFixed(2))
+        return porcent
     }
 
     /**
@@ -253,7 +274,8 @@ class TaskManager {
      * - Retorna el conteo total
      */
     getTaskCount() {
-        throw new Error('Method getTaskCount not implemented');
+        return this.tasks.reduce((count) => count + 1, 0);
+
     }
 
     /**
@@ -272,9 +294,35 @@ class TaskManager {
      * - Retorna el objeto con los conteos finales
      */
     getPriorityCounts() {
-        throw new Error('Method getPriorityCounts not implemented');
+        const low = this.tasks.filter(low => low.priority === 'low').length
+        const medium = this.tasks.filter(low => low.priority === 'medium').length
+        const high = this.tasks.filter(low => low.priority === 'high').length
+
+        const all = {
+            low: low,
+            medium: medium,
+            high: high
+        }
+        return all
     }
 }
+
+const task1 = new TaskManager()
+task1.addTask('carlos', 'low')
+console.log(task1)
+console.log(task1.completeTask('carlos'))
+console.log(task1)
+// task1.addTask('arreglar', 'low')
+// task1.addTask('casa', 'medium')
+// task1.addTask('cambio', 'medium')
+// task1.tasks[0].toggleComplete()
+// task1.tasks[1].toggleComplete()
+// console.log(task1.getTasksByPriority('low'))
+// console.log(task1.getTaskDescriptions())
+// console.log(task1.getCompletionPercentage())
+console.log(task1.getPriorityCounts())
+
+
 
 module.exports = {
     Task,
