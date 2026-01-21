@@ -158,7 +158,7 @@ console.log(numero)
 numero.getValue()
 console.log(numero)
 
-//candeloso ¿
+//candeloso listo papa
 
 module.exports = {
     Calculator
