@@ -144,7 +144,7 @@ class Calculator {
         throw new Error('Method getValue not implemented');
     }
 }
-
+ 
 module.exports = {
     Calculator
 };
