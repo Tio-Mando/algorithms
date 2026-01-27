@@ -38,7 +38,18 @@ class Menu {
      * - Asigna los valores validados a this.name y this.description
      */
     constructor(name, description) {
-        throw new Error('Menu constructor not implemented');
+        if (name === '' || typeof name !== 'string') throw new Error('Menu name is required')
+        const nameFixed = name.trim()
+        if (nameFixed === '') throw new Error('Menu name is required')
+
+        if (description === '' || typeof description !== 'string') throw new Error('Menu description is required')
+        const descriptionFixed = description.trim()
+        if (descriptionFixed === '') throw new Error('Menu description is required')
+
+            this.dishes = []
+            this.name = nameFixed
+            this.description = descriptionFixed
+
     }
 
     /**
