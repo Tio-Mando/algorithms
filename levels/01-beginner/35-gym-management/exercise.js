@@ -64,6 +64,7 @@ class Member {
 
         this.checkIns = []
         this.id = idFixed
+        this.email = emailFixed
         this.name = nameFixed
         this.membershipType = membershipType
         this.startDate = startDate
@@ -87,7 +88,7 @@ class Member {
     checkIn() {
         const NewDate = { date: new Date() }
         this.checkIns.push(NewDate)
-        return NewDate
+        return NewDate.date
     }
 
     /**
@@ -174,7 +175,7 @@ class Member {
         const expirationDate = new Date(this.startDate)
         expirationDate.setMonth(expirationDate.getMonth() + 12)
         console.log(expirationDate, this.startDate, 'cual es mayor')
-        if (expirationDate > this.startDate) return true
+        if (expirationDate.getTime() > new Date().getTime()) return true
         return false
     }
 
@@ -197,7 +198,7 @@ class Member {
      * - Retorna la nueva fecha de inicio
      */
     renewMembership(months) {
-        if (months < 0) throw new Error('Months must be greater than 0')
+        if (months <= 0) throw new Error('Months must be greater than 0')
         const copyStarDate = new Date(this.startDate)
         copyStarDate.setMonth(copyStarDate.getMonth() + months)
         console.log(copyStarDate, 'chequeo')
@@ -243,6 +244,7 @@ class Member {
     getMembershipExpiryDate() {
         const dateBased = new Date(this.startDate)
         dateBased.setMonth(dateBased.getMonth() + 12)
+        dateBased.setDate(dateBased.getDate() + 1)
         return dateBased
     }
 }
@@ -444,21 +446,19 @@ class Gym {
      */
     getDailyAttendance(date) {
         if (!(date instanceof Date)) throw new Error('Date must be a Date object')
+        let allDates = []
         for (let memberZ of this.members) {
             const eachMember = memberZ.getCheckInHistory()
-            
+
             if (eachMember.length > 0) {
-                console.log(eachMember[0].date.getFullYear(),eachMember[0].date.getMonth(),eachMember[0].date.getDate())
-                console.log(date.getFullYear(),date.getMonth(),date.getDate())         
-                console.log('separado')         
-                console.log(eachMember[0].date)
-                console.log(date)         
+
                 const datefilter = eachMember.filter(dates => dates.date.getFullYear() === date.getFullYear() && dates.date.getMonth() === date.getMonth() && dates.date.getDate() === date.getDate())
-                console.log(datefilter, 'filtro')
+                allDates.push(datefilter)
             }
             console.log('//////')
         }
-
+        console.log(allDates.flat(), ' cosas ')
+        return allDates.flat()
     }
 
     /**
@@ -477,7 +477,9 @@ class Gym {
      * - Si no hay miembros, retorna 0
      */
     getTotalRevenue() {
-        throw new Error('Method getTotalRevenue not implemented');
+        return this.members.reduce((acumulador, pay) => {
+            return acumulador + (pay.getMembershipFee())
+        }, 0)
     }
 
     /**
@@ -496,7 +498,10 @@ class Gym {
      * - Retorna el promedio con 2 decimales usando toFixed(2) y parseFloat()
      */
     getAverageVisitsPerMember() {
-        throw new Error('Method getAverageVisitsPerMember not implemented');
+        if (this.members.length === 0) return '0.00'
+        const visites = this.members.map(member => member.getTotalVisits())
+        const average = ((visites.reduce((a, b) => a + b) / this.members.length).toFixed(2))
+        return average
     }
 
     /**
@@ -522,7 +527,20 @@ class Gym {
      * - Retorna el objeto con todas las estadísticas
      */
     getGymStatistics() {
-        throw new Error('Method getGymStatistics not implemented');
+        return {
+            totalMembers: this.members.length,
+            activeMembers: this.getActiveMembers().length,
+            membersByType: {
+                basic: this.getMembersByType('basic').length,
+                premium: this.getMembersByType('premium').length,
+                vip: this.getMembersByType('vip').length
+
+            },
+            totalRevenue: this.getTotalRevenue(),
+            averageVisits: this.getAverageVisitsPerMember()
+        }
+
+
     }
 }
 const startDate = new Date('2024-01-15');
@@ -533,6 +551,8 @@ const juan = new Member('M003', 'Juan', 'Jose@email.com', 'vip', startDate);
 console.log(member.checkIn(), 'chequeo')
 console.log(member.checkIn())
 console.log(member.checkIn())
+console.log(graterl.checkIn())
+console.log(graterl.checkIn())
 console.log(member.getCheckInHistory())
 console.log(member.getTotalVisits())
 console.log(member.getMembershipFee())
@@ -550,10 +570,14 @@ console.log(gym1.findMember(member.id))
 console.log(gym1.getMembersByType('vip'))
 console.log(gym1.getActiveMembers())
 console.log(gym1.getMembersNeedingRenewal())
+console.log(gym1.getDailyAttendance(new Date('2026-01-31')))
+console.log(gym1.getTotalRevenue())
+console.log(gym1.getAverageVisitsPerMember())
+console.log(gym1.getGymStatistics())
 console.log('//////////////////')
-console.log(gym1.getDailyAttendance(new Date('2026-01-30')))
+console.log(gym1.members[0])
+console.log(gym1.members[0].getMembershipExpiryDate().getDate())
 console.log('//////////////////')
-
 module.exports = {
     Member,
     Gym
