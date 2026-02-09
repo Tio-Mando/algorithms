@@ -43,7 +43,17 @@ class Product {
      * - Asigna los valores validados a las propiedades correspondientes (usando trim para strings)
      */
     constructor(name, price, stock, category) {
-        throw new Error('Product constructor not implemented');
+        if (name.trim() === '' || typeof name !== 'string') throw new Error("Product name is required");
+        if (price <= 0) throw new Error("Product price must be greater than 0");
+        if (stock < 0) throw new Error("Product stock must be greater than or equal to 0");
+        if (category.trim() === '' || typeof category !== 'string') throw new Error("Product category is required");
+
+        this.name = name
+        this.price = price
+        this.stock = stock
+        this.category = category
+
+
     }
 
     /**
@@ -56,7 +66,7 @@ class Product {
      * - Retorna this.price
      */
     getPrice() {
-        throw new Error('Method getPrice not implemented');
+        return this.price
     }
 
     /**
@@ -69,7 +79,7 @@ class Product {
      * - Retorna this.stock
      */
     getStock() {
-        throw new Error('Method getStock not implemented');
+        return this.stock
     }
 
     /**
@@ -82,7 +92,7 @@ class Product {
      * - Retorna this.category
      */
     getCategory() {
-        throw new Error('Method getCategory not implemented');
+        return this.category
     }
 
     /**
@@ -96,7 +106,8 @@ class Product {
      * - Retorna false en caso contrario
      */
     isAvailable() {
-        throw new Error('Method isAvailable not implemented');
+        if (this.stock > 0) return true
+        else return false
     }
 
     /**
@@ -115,7 +126,12 @@ class Product {
      * - Retorna true
      */
     reduceStock(quantity) {
-        throw new Error('Method reduceStock not implemented');
+        if (quantity <= 0) throw new Error("Quantity must be greater than 0");
+        if (quantity >= this.stock) throw new Error("Insufficient stock");
+        this.stock -= quantity
+        return true
+
+
     }
 }
 
@@ -136,7 +152,8 @@ class Cart {
      * - Inicializa this.discount como 0
      */
     constructor() {
-        throw new Error('Cart constructor not implemented');
+        this.items = []
+        this.discount = 0
     }
 
     /**
@@ -167,7 +184,27 @@ class Cart {
      * - Retorna true
      */
     addProduct(product, quantity) {
-        throw new Error('Method addProduct not implemented');
+        if (!(product instanceof Product)) throw new Error("Product must be an instance of Product");
+        if (quantity <= 0) throw new Error("Quantity must be greater than 0");
+        if (!(product.isAvailable())) throw new Error("Product is not available");
+
+
+        const findItem = this.items.find(item => item.product.name === product.name)
+
+
+        if (findItem === undefined) {
+            if (product.getStock() < quantity) throw new Error("Insufficient stock");
+            else this.items.push({ product, quantity })
+        } else {
+            findItem.quantity += quantity
+            // console.log(findItem, 'cambio de quantility')
+            if (findItem.quantity > product.getStock()) throw new Error("Insufficient stock");
+            const ind = this.items.findIndex(item => item.product.name === findItem.product.name)
+            this.items[ind].quantity = findItem.quantity
+
+        }
+
+        return true
     }
 
     /**
@@ -185,7 +222,10 @@ class Cart {
      * - Retorna true
      */
     removeProduct(productName) {
-        throw new Error('Method removeProduct not implemented');
+        const ind = this.items.findIndex(indd => indd.product.name === productName)
+        if(ind === -1) return false
+        else this.items.splice(ind,1)
+        return true
     }
 
     /**
@@ -423,6 +463,26 @@ class Store {
         throw new Error('Method getInventoryValue not implemented');
     }
 }
+
+const caraotas = new Product('caraotas', 1.2, 44, 'granos')
+const arbejas = new Product('arbejas', 1.2, 44, 'granos')
+// console.log(caraotas.getCategory())
+// console.log(caraotas.getPrice())
+// console.log(caraotas.getStock())
+// console.log(caraotas.isAvailable())
+// console.log(caraotas.reduceStock(34))
+// console.log(caraotas)
+
+console.log(caraotas)
+console.log(arbejas)
+const carrito1 = new Cart()
+console.log(carrito1.addProduct(caraotas, 10))
+console.log(carrito1.addProduct(caraotas, 10))
+console.log(carrito1.addProduct(arbejas, 22))
+console.log(carrito1.addProduct(arbejas, 22))
+console.log(carrito1)
+console.log(carrito1.removeProduct('caraotas'))
+console.log(carrito1)
 
 module.exports = {
     Product,
