@@ -223,8 +223,8 @@ class Cart {
      */
     removeProduct(productName) {
         const ind = this.items.findIndex(indd => indd.product.name === productName)
-        if(ind === -1) return false
-        else this.items.splice(ind,1)
+        if (ind === -1) return false
+        else this.items.splice(ind, 1)
         return true
     }
 
@@ -245,7 +245,14 @@ class Cart {
      * - Retorna true
      */
     updateQuantity(productName, newQuantity) {
-        throw new Error('Method updateQuantity not implemented');
+        if (newQuantity <= 0) throw new Error("Quantity must be greater than 0");
+        const product = this.items.find(item => item.product.name === productName)
+        if (product === undefined) throw new Error("Product not found in cart");
+
+
+        const ind = this.items.findIndex(ind => ind.product.name === product.product.name)
+        this.items[ind].quantity = newQuantity
+        return true
     }
 
     /**
@@ -262,7 +269,10 @@ class Cart {
      * - Retorna true
      */
     setDiscount(discountPercent) {
-        throw new Error('Method setDiscount not implemented');
+        if (!(discountPercent <= 100 && discountPercent >= 0)) throw new Error("Discount must be between 0 and 100");
+        this.discount = discountPercent
+        return true
+
     }
 
     /**
@@ -278,7 +288,10 @@ class Cart {
      * - Retorna el subtotal
      */
     getSubtotal() {
-        throw new Error('Method getSubtotal not implemented');
+        if (this.items.length === 0) return 0
+        return this.items.reduce((contador, item) => {
+            return contador + (item.product.getPrice() * item.quantity)
+        }, 0)
     }
 
     /**
@@ -294,7 +307,10 @@ class Cart {
      * - Retorna el total
      */
     getTotal() {
-        throw new Error('Method getTotal not implemented');
+        const subTotal = this.getSubtotal()
+        const discount = subTotal * (this.discount / 100)
+        const total = subTotal - discount
+        return total
     }
 
     /**
@@ -310,7 +326,11 @@ class Cart {
      * - Retorna el total
      */
     getTotalItems() {
-        throw new Error('Method getTotalItems not implemented');
+        if (this.items.length === 0) return 0
+        return this.items.reduce((contador, item) => {
+            return contador + (item.quantity)
+        }, 0)
+
     }
 
     /**
@@ -325,7 +345,9 @@ class Cart {
      * - Retorna true
      */
     clear() {
-        throw new Error('Method clear not implemented');
+        this.items = []
+        this.discount = 0
+        return true
     }
 }
 
@@ -350,7 +372,10 @@ class Store {
      * - Inicializa this.products como un array vacío
      */
     constructor(name) {
-        throw new Error('Store constructor not implemented');
+        if (name.trim() === '' || typeof name !== 'string') throw new Error("Store name is required");
+        this.name = name.trim()
+        this.products = []
+
     }
 
     /**
@@ -369,7 +394,13 @@ class Store {
      * - Retorna el producto agregado
      */
     addProduct(product) {
-        throw new Error('Method addProduct not implemented');
+        if (!(product instanceof Product)) throw new Error("Product must be an instance of Product");
+        const validationProduct = this.findProduct(product.name)
+        if (validationProduct !== null) throw new Error("Product already exists");
+        else this.products.push(product)
+        return product
+
+
     }
 
     /**
@@ -384,7 +415,9 @@ class Store {
      * - Retorna el producto encontrado o null si no existe
      */
     findProduct(productName) {
-        throw new Error('Method findProduct not implemented');
+        const checking = this.products.find(prod => prod.name === productName)
+        if (checking === undefined) return null
+        else return checking
     }
 
     /**
@@ -399,7 +432,8 @@ class Store {
      * - Retorna el array filtrado
      */
     getAvailableProducts() {
-        throw new Error('Method getAvailableProducts not implemented');
+        const available = this.products.filter(prod => prod.isAvailable())
+        return available
     }
 
     /**
@@ -415,7 +449,7 @@ class Store {
      * - Retorna el array filtrado
      */
     getProductsByCategory(category) {
-        throw new Error('Method getProductsByCategory not implemented');
+        return this.products.filter(prod => prod.getCategory() === category)
     }
 
     /**
@@ -444,7 +478,17 @@ class Store {
      * - Retorna el total de la compra
      */
     processPurchase(cart) {
-        throw new Error('Method processPurchase not implemented');
+        if (!(cart instanceof Cart)) throw new Error("Cart must be an instance of Cart");
+        if (cart.items.length < 0) throw new Error("Cart is empty");
+        const validationStock = cart.items.forEach(item => {
+            item.product.getStock() >= item.quantity
+            console.log(item.product.getStock(), item.quantity)
+            if (item.product.getStock() <= item.quantity) throw new Error(`Insufficient stock for product: [${item.product.name}]`);
+
+        });
+        return validationStock
+
+
     }
 
     /**
@@ -464,8 +508,9 @@ class Store {
     }
 }
 
-const caraotas = new Product('caraotas', 1.2, 44, 'granos')
-const arbejas = new Product('arbejas', 1.2, 44, 'granos')
+const caraotas = new Product('caraotas', 1, 44, 'granos')
+const arbejas = new Product('arbejas', 1, 44, 'granos')
+const pollo = new Product('pollo', 1, 44, 'pollos')
 // console.log(caraotas.getCategory())
 // console.log(caraotas.getPrice())
 // console.log(caraotas.getStock())
@@ -476,13 +521,30 @@ const arbejas = new Product('arbejas', 1.2, 44, 'granos')
 console.log(caraotas)
 console.log(arbejas)
 const carrito1 = new Cart()
+console.log(carrito1.addProduct(caraotas, 1))
 console.log(carrito1.addProduct(caraotas, 10))
-console.log(carrito1.addProduct(caraotas, 10))
+console.log(carrito1.addProduct(arbejas, 1))
 console.log(carrito1.addProduct(arbejas, 22))
-console.log(carrito1.addProduct(arbejas, 22))
+console.log(carrito1.updateQuantity('caraotas', 12))
+console.log(carrito1.setDiscount(10))
+console.log(carrito1.getSubtotal())
+console.log(carrito1.getTotal())
+console.log(carrito1.getTotalItems())
+// console.log(carrito1.clear())
 console.log(carrito1)
-console.log(carrito1.removeProduct('caraotas'))
-console.log(carrito1)
+console.log('//////////////////////')
+console.log('//////////////////////')
+
+const storeArmando = new Store('storeArmando')
+console.log(storeArmando.addProduct(caraotas))
+console.log(storeArmando.addProduct(arbejas))
+console.log(storeArmando.addProduct(pollo))
+console.log(storeArmando.getAvailableProducts())
+console.log(storeArmando.getProductsByCategory('pollos'))
+console.log(storeArmando.processPurchase(carrito1))
+// console.log(storeArmando)
+
+
 
 module.exports = {
     Product,
