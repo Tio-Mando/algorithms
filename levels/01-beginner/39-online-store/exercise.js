@@ -479,14 +479,14 @@ class Store {
      */
     processPurchase(cart) {
         if (!(cart instanceof Cart)) throw new Error("Cart must be an instance of Cart");
-        if (cart.items.length < 0) throw new Error("Cart is empty");
-        const validationStock = cart.items.forEach(item => {
-            item.product.getStock() >= item.quantity
-            console.log(item.product.getStock(), item.quantity)
-            if (item.product.getStock() <= item.quantity) throw new Error(`Insufficient stock for product: [${item.product.name}]`);
+        if (cart.items.length <= 0) throw new Error("Cart is empty");
+        cart.items.forEach(item => { if (item.product.getStock() <= item.quantity) throw new Error(`Insufficient stock for product: ${item.product.name}`); });
 
-        });
-        return validationStock
+        cart.items.forEach(item => item.product.reduceStock(item.quantity))
+        // total
+        const total = cart.getTotal()
+        cart.clear()
+        return total
 
 
     }
@@ -504,7 +504,10 @@ class Store {
      * - Retorna el valor total
      */
     getInventoryValue() {
-        throw new Error('Method getInventoryValue not implemented');
+        if (this.products.length === 0) return 0
+        return this.products.reduce((contador, item) => {
+            return contador + (item.getPrice() * item.getStock())
+        }, 0)
     }
 }
 
@@ -542,7 +545,8 @@ console.log(storeArmando.addProduct(pollo))
 console.log(storeArmando.getAvailableProducts())
 console.log(storeArmando.getProductsByCategory('pollos'))
 console.log(storeArmando.processPurchase(carrito1))
-// console.log(storeArmando)
+console.log(storeArmando.getInventoryValue())
+console.log(storeArmando)
 
 
 
