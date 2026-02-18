@@ -40,7 +40,16 @@ class Bus {
      * - Asigna los valores validados a this.busNumber y this.capacity
      */
     constructor(busNumber, capacity) {
-        throw new Error('Bus constructor not implemented');
+        if (busNumber.trim() === '' || typeof busNumber !== 'string') throw new Error("Bus number is required");
+        if (capacity <= 0) throw new Error("Bus capacity must be greater than 0");
+
+        this.currentPassengers = 0
+        this.currentRoute = null
+        this.isInService = true
+        this.busNumber = busNumber
+        this.capacity = capacity
+
+
     }
 
     /**
@@ -61,7 +70,11 @@ class Bus {
      * - Retorna el nuevo total de pasajeros
      */
     boardPassengers(count) {
-        throw new Error('Method boardPassengers not implemented');
+        if (count <= 0) throw new Error("Passenger count must be greater than 0");
+        if (!((this.currentPassengers + count) <= this.capacity)) throw new Error("Not enough capacity");
+        else return this.currentPassengers += count
+
+
     }
 
     /**
@@ -82,7 +95,11 @@ class Bus {
      * - Retorna el nuevo total de pasajeros
      */
     alightPassengers(count) {
-        throw new Error('Method alightPassengers not implemented');
+        if (count <= 0) throw new Error("Passenger count must be greater than 0");
+        if(this.currentPassengers <= count ) throw new Error("Not enough passengers on board");
+
+        return this.currentPassengers -= count
+        
     }
 
     /**
@@ -413,6 +430,11 @@ class TransitSystem {
         throw new Error('Method getMostPopularRoute not implemented');
     }
 }
+
+const bus1 = new Bus('22', 75)
+console.log(bus1.boardPassengers(75))
+console.log(bus1.alightPassengers(25))
+console.log(bus1)
 
 module.exports = {
     Bus,
