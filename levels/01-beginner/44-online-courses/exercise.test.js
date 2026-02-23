@@ -40,7 +40,7 @@ describe('Sistema de Gestión de Cursos Online', () => {
             // Entrada: Curso con lecciones de 2, 3 y 5 horas
             // Esperado: Debe retornar 10 horas
             const course = new Course('C001', 'JS Basics', 'John', 20, 99.99);
-            course.addLesson('Lesson 1', 2);
+            courseenrollInCourse.addLesson('Lesson 1', 2);
             course.addLesson('Lesson 2', 3);
             course.addLesson('Lesson 3', 5);
             expect(course.getTotalDuration()).toBe(10);
