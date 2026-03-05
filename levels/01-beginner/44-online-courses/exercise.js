@@ -21,6 +21,8 @@ class Course {
 
     enrollStudent(student) {
         if (!(student instanceof Student)) throw new Error("Student must be an instance of Student");
+        if (this.enrolledStudents.find(stu => stu.studentId === student.studentId)) throw new Error("Student already enrolled");
+
         if (this.enrolledStudents.length === 0 || this.enrolledStudents.find(stu => stu.studentId === student.studentId) === undefined) this.enrolledStudents.push(student)
 
         return this.enrollStudent.length
@@ -54,7 +56,7 @@ class Course {
 
     getCompletionRate() {
         const studentsAproved = this.enrolledStudents.filter(stu => {
-            return stu.completedCourses.find(curse => curse.title === this.title)
+            return stu.completedCourses.find(curse => curse === this.courseId)
         }).length
 
 
@@ -110,7 +112,7 @@ class Student {
 
     updateProgress(courseId, percentage) {
         if (courseId.trim === '' || typeof courseId !== 'string') throw new Error("courseID is required");
-        if (percentage <= 0 && percentage >= 100) throw new Error("Progress must be between 0 and 100");
+        if (percentage <= 0 || percentage >= 100) throw new Error("Progress must be between 0 and 100");
 
         const validation = this.enrolledCourses.find(cour => {
             return cour.courseId === courseId
@@ -235,51 +237,73 @@ class LearningPlatform {
 }
 
 
-const photografi = new Course('1', 'Curso de Fotografia', 'Rosangel Rodriguez', 231, 400)
-const cartas = new Course('2', 'Curso de cartas', 'Rosangel Rodriguez', 231, 2000)
-const student1 = new Student('1', 'Erick Toro', 'ellacrita@gmail.com')
-const student2 = new Student('2', 'Carlos TOro', 'acrita@gmail.com')
-console.log(photografi.enrollStudent(student1))
-console.log(photografi.enrollStudent(student2))
-console.log(photografi.addLesson('clase 1: La muerte', 22))
-console.log(photografi.addLesson('clase 2: camara', 10))
-console.log(photografi.getTotalLessons())
-console.log(photografi.getTotalDuration())
-console.log(photografi.getEnrollmentCount())
-console.log(photografi.getCompletionRate())
+// const photografi = new Course('1', 'Curso de Fotografia', 'Rosangel Rodriguez', 231, 400)
+// const cartas = new Course('2', 'Curso de cartas', 'Rosangel Rodriguez', 231, 2000)
+// const student1 = new Student('1', 'Erick Toro', 'ellacrita@gmail.com')
+// const student2 = new Student('2', 'Carlos TOro', 'acrita@gmail.com')
+// console.log(photografi.enrollStudent(student1))
+// console.log(photografi.enrollStudent(student2))
+// console.log(photografi.addLesson('clase 1: La muerte', 22))
+// console.log(photografi.addLesson('clase 2: camara', 10))
+// console.log(photografi.getTotalLessons())
+// console.log(photografi.getTotalDuration())
+// console.log(photografi.getEnrollmentCount())
+// console.log(photografi.getCompletionRate())
 
-console.log(photografi)
-
-
-console.log(student1.enrollInCourse(photografi))
-console.log(student2.enrollInCourse(photografi))
-console.log(student1.enrollInCourse(cartas))
-console.log(student1.completeCourse('1'), 'aqui')
-console.log(student1.completeCourse('2'), 'aqui')
-console.log(student1.updateProgress('1', 20))
-console.log(student1.getProgress('1'))
-console.log(student1.getTotalCoursesEnrolled())
-console.log(student1.getCompletionRate())
-console.log(student1)
+// console.log(photografi)
 
 
-const cursera = new LearningPlatform('cursera')
-console.log(cursera.addCourse(photografi))
-console.log(cursera.addCourse(cartas))
-console.log(cursera.registerStudent(student1))
-console.log(cursera.registerStudent(student2))
-console.log(cursera.getCoursesByInstructor('Rosangel Rodriguez'))
-console.log('/////////////')
-console.log('/////////////')
-console.log(cursera.getMostPopularCourse())
-console.log('/////////////')
-console.log('/////////////')
-console.log(cursera.getTotalRevenue())
-console.log(cursera.getAverageCompletionRate())
-console.log(cursera)
-console.log(cursera.getStudentStatistics('2'))
-console.log('//////////////////////')
-console.log(cursera.students.map(stu => cursera.getStudentStatistics(stu.studentId)))
+// console.log(student1.enrollInCourse(photografi))
+// console.log(student2.enrollInCourse(photografi))
+// console.log(student1.enrollInCourse(cartas))
+// console.log(student1.completeCourse('1'), 'aqui')
+// console.log(student1.completeCourse('2'), 'aqui')
+// console.log(student1.updateProgress('1', 20))
+// console.log(student1.getProgress('1'))
+// console.log(student1.getTotalCoursesEnrolled())
+// console.log(student1.getCompletionRate())
+// console.log(student1)
+
+
+// const cursera = new LearningPlatform('cursera')
+// console.log(cursera.addCourse(photografi))
+// console.log(cursera.addCourse(cartas))
+// console.log(cursera.registerStudent(student1))
+// console.log(cursera.registerStudent(student2))
+// console.log(cursera.getCoursesByInstructor('Rosangel Rodriguez'))
+// console.log('/////////////')
+// console.log('/////////////')
+// console.log(cursera.getMostPopularCourse())
+// console.log('/////////////')
+// console.log('/////////////')
+// console.log(cursera.getTotalRevenue())
+// console.log(cursera.getAverageCompletionRate())
+// console.log(cursera)
+// console.log(cursera.getStudentStatistics('2'))
+// console.log('//////////////////////')
+// console.log(cursera.students.map(stu => cursera.getStudentStatistics(stu.studentId)))
+
+const course = new Course('C001', 'JS Basics', 'John', 20, 99.99);
+const student1 = new Student('S001', 'Juan', 'juan@email.com');
+const student2 = new Student('S002', 'Pedro', 'pedro@email.com');
+const student3 = new Student('S003', 'Maria', 'maria@email.com');
+const student4 = new Student('S004', 'Ana', 'ana@email.com');
+
+// Los estudiantes deben inscribirse en ambos sentidos
+student1.enrollInCourse(course);
+student2.enrollInCourse(course);
+student3.enrollInCourse(course);
+student4.enrollInCourse(course);
+
+course.enrollStudent(student1);
+course.enrollStudent(student2);
+course.enrollStudent(student3);
+course.enrollStudent(student4);
+
+student1.completeCourse('C001');
+student2.completeCourse('C001');
+console.log(course.getCompletionRate())
+console.log(course.enrolledStudents)
 
 
 
