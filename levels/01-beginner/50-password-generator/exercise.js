@@ -19,27 +19,44 @@
 
 function generatePassword(length, options = {}) {
     // TODO: Implementar la solución aquí
-    
+
     // Pista 1: Valida que length sea un número entre 8 y 128
-    
+    if (length < 8 || length > 128) throw new Error("Length must be an integer between 8 and 128");
+
     // Pista 2: Valida que al menos una opción esté habilitada (includeUppercase, includeLowercase, includeNumbers, includeSpecialChars)
-    
+    const validation = Object.values(options).includes(true)
+
     // Pista 3: Define los conjuntos de caracteres disponibles:
-    //   - Mayúsculas: "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
-    //   - Minúsculas: "abcdefghijklmnopqrstuvwxyz"
-    //   - Números: "0123456789"
-    //   - Especiales: "!@#$%^&*"
-    
+      const Mayúsculas = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+      const Minúsculas = "abcdefghijklmnopqrstuvwxyz"
+      const Números = "0123456789"
+      const Especiales = "!@#$%^&*"
+
     // Pista 4: Construye un string con todos los caracteres permitidos según las opciones
-    
+    let passCharacter = ''
+    if(options.includeUppercase) passCharacter += Mayúsculas
+    if(options.includeLowercase) passCharacter += Minúsculas
+    if(options.includeNumbers) passCharacter += Números
+    if(options.includeSpecialChars) passCharacter += Especiales
+
+
+    console.log(passCharacter)
+
     // Pista 5: Asegúrate de que la contraseña incluya al menos un carácter de cada tipo habilitado
-    
+
     // Pista 6: Genera caracteres aleatorios usando Math.random() y el string de caracteres permitidos
-    
+
     // Pista 7: Mezcla los caracteres para que no estén en orden predecible
-    
-    throw new Error('Función no implementada');
+
 }
 
-module.exports = generatePassword;
 
+
+    generatePassword(12, {
+        includeUppercase: false,
+        includeLowercase: true,
+        includeNumbers: true,
+        includeSpecialChars: false
+    })
+
+    module.exports = generatePassword;

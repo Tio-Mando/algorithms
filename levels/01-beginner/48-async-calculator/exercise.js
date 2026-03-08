@@ -187,7 +187,11 @@ const operations = [
 // console.log(await asyncAdd(2, 4))
 // console.log(await asyncMultiply(2, 4))
 // console.log(await asyncCalculate(operations))
-// console.log(await asyncCalculateParallel(operations))
+//  asyncCalculateParallel(operations).then(a => console.log(a))
+ (async () => {
+    const calc = await asyncCalculateParallel(operations)
+    console.log(calc)
+ })();
 // console.log(await measureExecutionTime(asyncAdd)) 
 // asyncCalculate([])
 
