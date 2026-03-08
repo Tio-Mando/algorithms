@@ -201,13 +201,10 @@ function processMultipleRequests(urls) {
     return arryAnalise
 }
 
-
-
-
 // const chequeo = simulateApiCall()
-// console.log(chequeo)
+// // console.log(chequeo)
 // const a = await fetchWithRetry('www.google.com', 5)
-console.log( processMultipleRequests(['www.google.com', 'www.amazon.com', 'www.avimark.com']))
+// console.log( processMultipleRequests(['www.google.com', 'www.amazon.com', 'www.avimark.com']))
 
 
 
