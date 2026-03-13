@@ -2,7 +2,7 @@
  * @file exercise.js
  * @description Ejercicio de consumo de API usando fetch y async/await.
  */
-
+// candela
 /**
  * Obtiene los detalles de un usuario desde la API.
  * 
